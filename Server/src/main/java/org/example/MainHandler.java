@@ -20,7 +20,7 @@ public class MainHandler extends ChannelInboundHandlerAdapter {
         ByteBuf buf = (ByteBuf)msg;
         while (buf.readableBytes() > 0){
             // чтение происходит посимвольно
-            System.out.println((char)buf.readByte());
+            System.out.print((char)buf.readByte());
         }
         buf.release();
     }
