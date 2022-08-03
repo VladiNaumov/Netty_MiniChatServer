@@ -1,8 +1,8 @@
-module com.example.klient {
+module com.example {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens com.example.klient to javafx.fxml;
-    exports com.example.klient;
+    opens com.example to javafx.fxml;
+    exports com.example;
 }
