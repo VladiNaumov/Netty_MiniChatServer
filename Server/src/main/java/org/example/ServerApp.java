@@ -31,6 +31,7 @@ public class ServerApp {
 
             // конфигурируем на каком порту нужно запустить сервер
             ChannelFuture future = b.bind(8189).sync();
+            //ожидание закрытие (это блокирующая операция)
             future.channel().closeFuture().sync();
 
         } catch (Exception e) {
