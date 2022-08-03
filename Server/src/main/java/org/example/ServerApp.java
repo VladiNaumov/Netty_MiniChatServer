@@ -4,8 +4,8 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.ServerChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class ServerApp {
@@ -21,12 +21,11 @@ public class ServerApp {
         ServerBootstrap b = new ServerBootstrap();
         b.group(bossGroup,workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new ChannelInitializer<ServerChannel>() {
-                    //инициализатор SocetCanal
+                .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(ServerChannel serverChannel) throws Exception {
-
-
+                    protected void initChannel(SocketChannel socketChannel) throws Exception {
+                        //подключение класса new MainHandler()
+                        socketChannel.pipeline().addLast(new MainHandler());
                     }
                 });
 
