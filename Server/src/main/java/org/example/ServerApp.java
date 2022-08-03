@@ -7,6 +7,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 
 public class ServerApp {
 
@@ -24,13 +26,13 @@ public class ServerApp {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        //подключение класса new MainHandler()
-                        socketChannel.pipeline().addLast(new MainHandler());
+                        //подключение класса new MainHandler() для преобразования байтов в строку мы подключаем (new StringDecoder(), new StringEncoder())
+                        socketChannel.pipeline().addLast(new StringDecoder(), new StringEncoder(), new MainHandler());
                     }
                 });
 
             // конфигурируем на каком порту нужно запустить сервер
-            ChannelFuture future = b.bind(8189).sync();
+            ChannelFuture future = b.bind("localhost",8189).sync();
             //ожидание закрытие (это блокирующая операция)
             future.channel().closeFuture().sync();
 

@@ -1,7 +1,7 @@
 module com.example {
     requires javafx.controls;
     requires javafx.fxml;
-    requires io.netty.transport;
+    requires io.netty.all;
 
 
     opens com.example to javafx.fxml;
