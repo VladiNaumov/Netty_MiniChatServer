@@ -6,7 +6,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 
 // обработчик входящих сообщений в виде байт (ChannelInboundHandlerAdapter)
-public class MainHandler__ extends ChannelInboundHandlerAdapter {
+public class HandlerByte extends ChannelInboundHandlerAdapter {
     // метод отвечает за событие
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

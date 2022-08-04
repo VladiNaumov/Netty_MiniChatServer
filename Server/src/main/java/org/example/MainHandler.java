@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // обработчик входящих сообщений в виде строк (SimpleChannelInboundHandler<String>)
-public class MainHandlerDemo extends SimpleChannelInboundHandler<String> {
+public class MainHandler extends SimpleChannelInboundHandler<String> {
 
     private static final List<Channel> channels = new ArrayList<>();
     private static int newClientIndex = 1;
