@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
+
 public class ServerApp {
 
     public static void main(String[] args) {
@@ -22,12 +23,12 @@ public class ServerApp {
         // выполнение преднастройки нашего сервера
         ServerBootstrap b = new ServerBootstrap();
         b.group(bossGroup,workerGroup)
-                .channel(NioServerSocketChannel.class)
-                .childHandler(new ChannelInitializer<SocketChannel>() {
+                .channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         //подключение класса new MainHandler() для преобразования байтов в строку мы подключаем (new StringDecoder(), new StringEncoder())
-                        socketChannel.pipeline().addLast(new MainHandler(),new StringDecoder(), new StringEncoder());
+                         //socketChannel.pipeline().addLast(new MainHandler());
+                        socketChannel.pipeline().addLast(new StringDecoder(), new StringEncoder(), new MainHandlerDemo());
                     }
                 });
 
