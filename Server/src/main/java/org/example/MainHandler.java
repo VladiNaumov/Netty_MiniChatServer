@@ -21,13 +21,32 @@ public class MainHandler extends SimpleChannelInboundHandler<String> {
         channels.add(ctx.channel());
         clientNme = "Client #" + newClientIndex;
         newClientIndex++;
+        //рассылка сообщений от имени сервера
+        broadcastMessage("SERVER: ", "подключился новый клиент " + clientNme);
     }
 
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
         System.out.println("получено сообщение: " + s);
-        String out = String.format("[%s]: %s\n", clientNme, s);
+        // для отправки служебных сообщений
+        if(s.startsWith("/")){
+            // переименование ника пользователя
+            if(s.startsWith("/changename")) { // //changename myname1
+                String newNickname = s.split("\\s", 2)[1];
+                //сообщение о смене ника
+                broadcastMessage("SERVER: ", "клиент " + clientNme + " сменил имя " + newNickname);
+                clientNme = newNickname;
+            }
+            return;
+        }
+       broadcastMessage(clientNme, s);
+
+    }
+
+    // рассылка сообщений
+    public void broadcastMessage(String clientNme, String massage){
+        String out = String.format("[%s]: %s\n", clientNme, massage);
         for (Channel c : channels) {
             c.writeAndFlush(out);
         }
@@ -35,11 +54,15 @@ public class MainHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        // распечатывает информацию
-        cause.printStackTrace();
+        System.out.println("Client " + clientNme + " отвалился ");
+        // каналы удалить этого человека из списка
+        channels.remove(ctx.channel());
+        // рассылка сообщений
+        broadcastMessage("SERVER: ", "клиент " + clientNme + " вышел из сети ");
         // закрываем  с ним подключение
         ctx.close();
     }
+
 
 
 }

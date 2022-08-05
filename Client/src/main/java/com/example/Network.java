@@ -8,12 +8,12 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-
 public class Network {
     private SocketChannel channel;
 
-    public Network() {
-        new Thread(()-> {
+    public Network(CallBack onMassegeReceivedCallback) {
+
+       Thread t = new Thread(()-> {
 
             EventLoopGroup workerGroup = new NioEventLoopGroup();
             try {
@@ -26,15 +26,9 @@ public class Network {
                             protected void initChannel(SocketChannel socketChannel) throws Exception {
                                 channel = socketChannel;
                                 // для преобразования байтов в строку
-                                socketChannel.pipeline().addLast(new StringDecoder(), new StringEncoder(),
-                                new SimpleChannelInboundHandler<String>() {
-                                    @Override
-                                    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String s) throws Exception {
-                                        System.out.println(s);
-                                    }
-                                });
+                                socketChannel.pipeline().addLast(new StringDecoder(), new StringEncoder(), new ClienHandler(onMassegeReceivedCallback));
 
-                            }
+                           }
                         });
 
                 // конфигурируем на каком порту нужно запустить клиент
@@ -48,7 +42,11 @@ public class Network {
                  workerGroup.shutdownGracefully();
             }
 
-        }).start();
+        });
+        // делаем поток демоном
+        t.setDaemon(true);
+        t.start();
+
     }
 
 

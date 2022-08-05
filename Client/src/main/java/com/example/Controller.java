@@ -1,6 +1,5 @@
 package com.example;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -15,7 +14,10 @@ public class Controller {
 
     @FXML
     public void initialize() {
-        network = new Network();
+        network = new Network((args) -> {
+            // передача сообщения в поле графического интерфейса "сообщения"
+            mainArea.appendText((String)args[0]);
+        });
     }
 
     public void sendMsgAction() {
