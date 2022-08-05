@@ -49,7 +49,6 @@ public class Network {
 
     }
 
-
     public void sendMessage(String str){
        channel.writeAndFlush(str);
     }
