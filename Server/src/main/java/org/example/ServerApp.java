@@ -28,7 +28,7 @@ public class ServerApp {
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
                         //подключение класса new MainHandler() для преобразования байтов в строку мы подключаем (new StringDecoder(), new StringEncoder())
                          //socketChannel.pipeline().addLast(new MainHandler());
-                        socketChannel.pipeline().addLast(new StringDecoder(), new StringEncoder(), new MainHandler());
+                        socketChannel.pipeline().addLast(new StringDecoder(), new StringEncoder(), new HandlerString());
                     }
                 });
 
